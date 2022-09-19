@@ -1,0 +1,11 @@
+_migrations/*
+!_migrations/__init__.py
+
+
+
+#ignore the folder. 
+__pycache__ 
+migrations
+
+ 
+ 
