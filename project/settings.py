@@ -80,27 +80,27 @@ WSGI_APPLICATION = 'project.wsgi.application'
 
 import pymysql
 pymysql.install_as_MySQLdb()
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'construction',
-        'USER': 'postgres',
-        'PASSWORD': 'root',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
-}
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'github',
-#         'PORT': '3306',
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'construction',
+#         'USER': 'postgres',
+#         'PASSWORD': 'root',
 #         'HOST': 'localhost',
-#         'USER': 'root',
-#         'PASSWORD': 'root'
+#         'PORT': '5432',
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'construction',
+        'PORT': '3306',
+        'HOST': 'localhost',
+        'USER': 'root',
+        'PASSWORD': 'root'
+    }
+}
 
 
 # DATABASES = {
