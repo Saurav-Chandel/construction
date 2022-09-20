@@ -82,14 +82,15 @@ WSGI_APPLICATION = 'project.wsgi.application'
 # pymysql.install_as_MySQLdb()
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'construction',
-        'USER': 'postgres',
+        'USER': 'prostgre4s',
         'PASSWORD': 'root',
         'HOST': 'localhost',
-        'PORT': '5432',
+        'PORT': '',
     }
 }
+
 
 # DATABASES = {
 #     'default': {
