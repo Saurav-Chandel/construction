@@ -84,8 +84,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'construction',
-        'USER': 'prostgre4s',
-        'PASSWORD': 'root',
+        'USER': 'prostgres',
+        'PASSWORD': 'password',
         'HOST': 'localhost',
         'PORT': '',
     }
