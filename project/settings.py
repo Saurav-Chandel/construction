@@ -139,7 +139,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'Asia/Kolkata' 
+TIME_ZONE = 'UTC 
 
 USE_I18N = True
 
@@ -161,24 +161,56 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# STATICFILES_DIRS = (os.path.join(BASE_DIR, "static_cdn"),)    
-
-
-
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "static_cdn"),)    
 
 
 
 
 
 # [Unit]
+# Description=gunicorn socket
+
+# [Socket]
+# ListenStream=/run/gunicorn.sock
+
+# [Install]
+# WantedBy=sockets.target
+
+
+# [Unit]
 # Description=gunicorn daemon
+# Requires=gunicorn.socket
 # After=network.target
 
 # [Service]
 # User=ubuntu
 # Group=www-data
-# WorkingDirectory=/home/ubuntu/Attendence
-# ExecStart=/home/ubuntu/env/bin/gunicorn --access-logfile - --workers 3 --bind unix:/run/gunicorn.sock project.wsgi:application
+# WorkingDirectory=/home/ubuntu/project1/construction
+# ExecStart=/home/ubuntu/project1/env/bin/gunicorn \
+#            --access-logfile - \
+#             --workers 3 \
+#             --bind unix:/run/gunicorn.sock \
+#             project.wsgi:application>
 
 # [Install]
 # WantedBy=multi-user.target
+
+
+
+# [Unit]
+# Description=gunicorn daemon
+# Requires=gunicorn.socket
+# After=network.target
+
+# [Service]
+# User=ubuntu
+# Group=www-data
+# WorkingDirectory=/home/ubuntu/project/construction
+# ExecStart=/home/ubuntu/project/env/bin/gunicorn --access-logfile - --workers 3 --bind unix:/home/ubuntu/project/construction.sock project.wsgi:application>
+
+# [Install]
+# WantedBy=multi-user.target
+
+
+
+
