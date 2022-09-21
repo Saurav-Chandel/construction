@@ -19,7 +19,7 @@ material_type = [
     ('Fine Sand', 'FIne Sand'),
     ('Course Sand', 'Course Sand'),
     ('Crusher Sand', 'Crusher Sand'),
-    ('Course aggrigate 20mm', 'IrCourse aggrigate 20mmon'),
+    ('Course aggrigate 20mm', 'Course aggrigate 20mm'),
     ('Course aggrigate 40mm', 'Course aggrigate 40mm'),
     ('Course aggrigate 80mm', 'Course aggrigate 80mm'),
     ('Boulder', 'Boulder'),
