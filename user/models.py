@@ -15,25 +15,31 @@ status = [
 ]
 material_type = [
     (None, 'Select Material Type'),
-    ('Sand', 'Sand'),
     ('Cement', 'Cement'),
-    ('Gravel', 'Gravel'),
-    ('Balu', 'Balu'),
-    ('Iron', 'Iron'),
-    ('wood', 'wood'),
-    ('Tiles', 'Tiles'),
-    ('Electrical', 'Electrical'),
+    ('Fine Sand', 'FIne Sand'),
+    ('Course Sand', 'Course Sand'),
+    ('Crusher Sand', 'Crusher Sand'),
+    ('Course aggrigate 20mm', 'IrCourse aggrigate 20mmon'),
+    ('Course aggrigate 40mm', 'Course aggrigate 40mm'),
+    ('Course aggrigate 80mm', 'Course aggrigate 80mm'),
+    ('Boulder', 'Boulder'),
+    ('Bricks', 'Bricks'),
+    ('CutStone', 'CutStone'),
+    ('Re-bar', 'Re-bar'),
+    ('Ms Steel', 'Ms Steel'),
+    ('Ms-Pipe', 'Ms-Pipe'),
 ]
 units = [
     (None, 'Select Unit'),
     ('Kg', 'Kg'),
-    ('Beg', 'Beg'),
+    ('Bags', 'Bags'),
     ('Tipper', 'Tipper'),
     ('Truck', 'Truck'),
     ('Tonnes', 'Tonnes'),
     ('Quintal', 'Quintal'),
-    ('box', 'box'),
+    ('Piece', 'box'),
     ('points', 'points'),
+    ('Troley', 'Troley'),
 ]
 
 class User(AbstractUser):

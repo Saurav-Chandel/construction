@@ -78,19 +78,32 @@ WSGI_APPLICATION = 'project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# import pymysql
-# pymysql.install_as_MySQLdb()
+import pymysql
+pymysql.install_as_MySQLdb()
+#Used in production.
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'myproject',
+#         'USER': 'myprojectuser',
+#         'PASSWORD': 'password',
+#         'HOST': 'localhost',
+#         'PORT': '',
+#     }
+# }
+
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'myproject',
-        'USER': 'myprojectuser',
-        'PASSWORD': 'password',
+        'NAME': 'construction',
+        'USER': 'postgres',
+        'PASSWORD': 'root',
         'HOST': 'localhost',
-        'PORT': '',
+        'PORT': '5432',
     }
 }
-
 
 # DATABASES = {
 #     'default': {
@@ -140,7 +153,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC' 
+TIME_ZONE = 'Asia/Kolkata' 
 
 USE_I18N = True
 
@@ -184,14 +197,14 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, "static_cdn"),)
 # After=network.target
 
 # [Service]
-# User=ubuntu
+# User=developer
 # Group=www-data
-# WorkingDirectory=/home/ubuntu/project1/construction
-# ExecStart=/home/ubuntu/project1/env/bin/gunicorn \
-#            --access-logfile - \
-#             --workers 3 \
-#             --bind unix:/run/gunicorn.sock \
-#             project.wsgi:application>
+# WorkingDirectory=/home/ubuntu/project1/construction 
+# ExecStart=/home/ubuntu/env/bin/gunicorn \
+#         --access-logfile - \
+#         --workers 3 \
+#         --bind unix:/run/gunicorn.sock \
+#         project.wsgi:application
 
 # [Install]
 # WantedBy=multi-user.target

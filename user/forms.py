@@ -59,7 +59,7 @@ class MaterialForm(forms.ModelForm):
 
     class Meta:
         model = Material
-        fields = ['retailer','project','material_type','figure','unit','purpose','size','price_per_item','money_paid']
+        fields = ['retailer','project','material_type','figure','unit','purpose','size','price_per_item']
         widgets={
           'retailer':forms.Select(attrs={'class':'form-control'}),
           'material_type':forms.Select(attrs={'class':'form-control'}),
@@ -71,7 +71,7 @@ class MaterialForm(forms.ModelForm):
           'price_per_item': forms.TextInput(attrs={'class': 'form-control'}),
           'size': forms.TextInput(attrs={'class': 'form-control'}),
         #   'total_price': forms.NumberInput(attrs={'class': 'form-control'}),
-          'money_paid': forms.NumberInput(attrs={'class': 'form-control'})
+        #   'money_paid': forms.NumberInput(attrs={'class': 'form-control'})
       }
    
     def __init__(self, *args, **kwargs):
