@@ -126,17 +126,14 @@
       <div class="col">
         <div class="card bg-default shadow">
           <div class="card-header bg-transparent border-0">
-            <h3 class="text-white mb-0">Wokers of {{project.title}} Project</h3>
+            <h3 class="text-white mb-0">Wokersss of {{project.title}} Project</h3>
           </div>
-         
+{% comment %}          
           {% for worker,attendence in data %}
           {{worker}}
           {{attendence}}
-          {% endfor %} 
+          {% endfor %}  {% endcomment %}
 
-
-
-          
          
           <div class="table-responsive">
           {% comment %} {% for worker,attendence in data %}

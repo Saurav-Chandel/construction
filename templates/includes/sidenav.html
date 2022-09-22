@@ -21,13 +21,13 @@
           </li>
           <li data-toggle="tooltip" title="Add Your Project!" class="nav-item">
             <a class="nav-link {% if 'project' in segment %} active {% endif %}" href="{% url 'add_project' %}">
-              <i class="ni ni-planet text-orange"></i>
+              <i class="ni ni-building text-orange"></i>
               <span class="nav-link-text">Project</span>
             </a>
           </li>
           <li data-toggle="tooltip" title="Add Your Worker!" class="nav-item">
             <a class="nav-link {% if 'worker' in segment %} active {% endif %}" href="{% url 'add_worker' %}">
-              <i class="ni ni-pin-3 text-primary"></i>
+              <i class="ni ni-single-02 text-primary"></i>
               <span class="nav-link-text">Worker</span>
             </a>
           </li>
@@ -40,7 +40,7 @@
           <li class="nav-item">
             
             <a class="nav-link {% if 'retailer' in segment %} active {% endif %}" href="{% url 'add_retailer' %}">
-              <i class="ni ni-bullet-list-67 text-default"></i>
+              <i class="ni ni-delivery-fast text-default"></i>
               <span class="nav-link-text">Retailer</span>
             </a>
           </li>
@@ -56,24 +56,24 @@
               <span class="nav-link-text">Profiles</span>
             </a>
           </li>
-          <li class="nav-item">
+          {% comment %} <li class="nav-item">
             <a class="nav-link {% if 'tables' in segment %} active {% endif %}" href="#">
               <i class="ni ni-bullet-list-67 text-default"></i>
               <span class="nav-link-text">Tables</span>
             </a>
-          </li>
-          <li class="nav-item">
+          </li> {% endcomment %}
+          {% comment %} <li class="nav-item">
             <a class="nav-link" href="/login.html">
               <i class="ni ni-key-25 text-info"></i>
               <span class="nav-link-text">Login (template)</span>
             </a>
-          </li>
-          <li class="nav-item">
+          </li> {% endcomment %}
+          {% comment %} <li class="nav-item">
             <a class="nav-link" href="/register.html">
               <i class="ni ni-circle-08 text-pink"></i>
               <span class="nav-link-text">Register (template)</span>
             </a>
-          </li>
+          </li> {% endcomment %}
 
           <li class="nav-item">
             <a class="nav-link" href="{% url 'logout' %}">
@@ -85,38 +85,38 @@
         <!-- Divider -->
         <hr class="my-3">
         <!-- Heading -->
-        <h6 class="navbar-heading p-0 text-muted">
+        {% comment %} <h6 class="navbar-heading p-0 text-muted">
           <span class="docs-normal">Resources</span>
-        </h6>
+        </h6> {% endcomment %}
         <!-- Navigation -->
         <ul class="navbar-nav mb-md-3">
 
-          <li class="nav-item">
+          {% comment %} <li class="nav-item">
             <a class="nav-link" 
                target="_blank" 
                href="https://appseed.us/admin-dashboards/django-dashboard-argon">
               <i class="ni ni-archive-2"></i>
               <span class="nav-link-text">Product Page</span>
             </a>
-          </li>
+          </li> {% endcomment %}
 
-          <li class="nav-item">
+          {% comment %} <li class="nav-item">
             <a class="nav-link" 
                target="_blank" 
                href="https://appseed.us/admin-dashboards/django-dashboard-argon-pro">
               <i class="ni ni-spaceship text-red"></i>
               <span class="nav-link-text text-red">PRO Version</span>
             </a>
-          </li>
+          </li> {% endcomment %}
 
-          <li class="nav-item">
+          {% comment %} <li class="nav-item">
             <a class="nav-link active active-pro" 
                target="_blank" 
                href="http://appseed.us">
               <i class="ni ni-send text-dark"></i>
               <span class="nav-link-text">AppSeed</span>
             </a>
-          </li>
+          </li> {% endcomment %}
         </ul>
       </div>
     </div>

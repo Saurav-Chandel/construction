@@ -71,7 +71,10 @@ def logout_view(request):
 
 @login_required(login_url="/login/")
 def index(request):
-    context = {'segment': 'index'}
+    project=Project.objects.all().count()
+    worker=Worker.objects.all().count()
+
+    context = {'segment': 'index','project':project,'worker':worker}
     return render(request,'admin/home.html',context)
 
     # html_template = loader.get_template('admin/home.html')
@@ -143,12 +146,12 @@ def Show_Material(request,id):
              figure=fm.cleaned_data['figure']
              unit=fm.cleaned_data['unit']
              price_per_item=fm.cleaned_data['price_per_item']
-             money_paid=fm.cleaned_data['money_paid']
+            #  money_paid=fm.cleaned_data['money_paid']
              purpose=fm.cleaned_data['purpose']
              size=fm.cleaned_data['size']
              retailer=fm.cleaned_data['retailer']
             #  project=fm.cleaned_data['project']
-             mat=Material(retailer=retailer,material_type=m_t,figure=figure,unit=unit,price_per_item=price_per_item,money_paid=money_paid,size=size,purpose=purpose,project=project)
+             mat=Material(retailer=retailer,material_type=m_t,figure=figure,unit=unit,price_per_item=price_per_item,size=size,purpose=purpose,project=project)
              mat.save()
              fm = ShowMaterialForm()  
              messages.add_message(request, messages.INFO, 'Material added successfully')
@@ -360,7 +363,7 @@ def Add_Material(request):
 
     if request.method == "GET":
         form = MaterialForm()
-        material=Material.objects.all()
+        material=Material.objects.all().order_by('-id')
         return render(request, 'admin/material.html', {"form": form,'material':material,'segment':'material'})   
 
 

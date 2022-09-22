@@ -150,15 +150,15 @@
                     <span class="name mb-0 text-sm">{{mat.quantity}}</span>
                   </td>
                   <td>
-                    <span class="name mb-0 text-sm">{{mat.price_per_item}}</span>
+                    <span class="name mb-0 text-sm">&#8377; {{mat.price_per_item}}</span>
                   </td>
 
                   <td>
-                    <span class="name mb-0 text-sm">{{mat.total_price}}</span>
+                    <span class="name mb-0 text-sm">&#8377; {{mat.total_price}}</span>
                   </td>
 
                   <td>
-                    <span class="name mb-0 text-sm">{% if mat.money_paid %}{{mat.money_paid}}{% else %}-{% endif %}</span>
+                    <span class="name mb-0 text-sm">{% if mat.money_paid %}&#8377; {{mat.money_paid}}{% else %}-{% endif %}</span>
                   </td>
                   <td>
                     <span class="name mb-0 text-sm">{% if mat.purpose %}{{mat.purpose|truncatechars:20}}{% else %}-{% endif %}</span>
@@ -252,7 +252,7 @@ function clicked(id){
         material_type: "Please Select Material Type", 
        // retailer: "Please Select Retailer", 
        // project: "Please Select Project", 
-        figure: "Please Enter figures",             
+        figure: "Please Enter Number Of Items",             
         unit: "Please Select unit",             
         price_per_item: "Please Enter price per Item",             
        // money_paid: "Please Enter Money Paid",             
