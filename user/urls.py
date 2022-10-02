@@ -22,6 +22,8 @@ urlpatterns = [
     path('add-attendance/', Add_Attendance, name='add_attendance'),
     path('mark-attendance-present/<int:id>/<int:ids>/', Mark_Attendance_present, name='mark_attendance_present'),
     path('mark-attendance-absent/<int:id>/<int:ids>/', Mark_Attendance_Absent, name='mark_attendance_absent'),
+    path('mark-short-attendence/<int:id>/<int:ids>/', Mark_Short_Day, name='mark_short_attendance'),
+    path('already_paid/<int:id>/<int:ids>/', Already_Paid, name='already_paid'),
 
     path('view_attenence/<int:id>/<int:ids>/', View_Attendence, name='view_attendence'),
     path('search_by_month/<int:id>/<int:ids>/', search_by_month, name='search_by_month'),

@@ -93,16 +93,41 @@
           <div class="form-group">
             <label for="id_material_type">Material type:</label>
             <select name="e_id_material_type" class="form-control" id="e_id_material_type">
+              {% comment %} {% for i in material_type %} {% endcomment %}
               <option value="" selected="">Select Material Type</option>
-              <option value="Sand">Sand</option>
+            
               <option value="Cement">Cement</option>
-              <option value="Gravel">Gravel</option>
-              <option value="Balu">Balu</option>
-              <option value="Iron">Iron</option>
-              <option value="wood">wood</option>
-              <option value="Tiles">Tiles</option>
-              <option value="Electrical">Electrical</option>
+            
+              <option value="Fine Sand">FIne Sand</option>
+            
+              <option value="Course Sand">Course Sand</option>
+            
+              <option value="Crusher Sand">Crusher Sand</option>
+            
+              <option value="Course aggrigate 20mm">Course aggrigate 20mm</option>
+            
+              <option value="Course aggrigate 40mm">Course aggrigate 40mm</option>
+            
+              <option value="Course aggrigate 80mm">Course aggrigate 80mm</option>
+            
+              <option value="Boulder">Boulder</option>
+            
+              <option value="Bricks">Bricks</option>
+            
+              <option value="CutStone">CutStone</option>
+            
+              <option value="Re-bar">Re-bar</option>
+            
+              <option value="Ms Steel">Ms Steel</option>
+            
+              <option value="Ms-Pipe">Ms-Pipe</option>
+            
             </select>
+          </div>
+
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Manual Material type:</label>
+            <input type="Number" name="e_id_manual_material_type" class="form-control" id="e_id_manual_material_type" >
           </div>
 
           <div class="form-group">
@@ -114,14 +139,26 @@
           <label for="id_unit">Unit:</label>
           <select name="e_id_unit" class="form-control" id="e_id_unit">
             <option value="" selected="">Select Unit</option>
+          
             <option value="Kg">Kg</option>
-            <option value="Beg">Beg</option>
+          
+            <option value="Bags">Bags</option>
+          
             <option value="Tipper">Tipper</option>
+          
             <option value="Truck">Truck</option>
+          
             <option value="Tonnes">Tonnes</option>
+          
             <option value="Quintal">Quintal</option>
-            <option value="box">box</option>
+          
+            <option value="Piece">box</option>
+          
             <option value="points">points</option>
+            <option value="Piece">Piece</option>
+          
+            <option value="Troley">Troley</option>
+          
           </select>
         </div>
 
@@ -265,9 +302,12 @@
                         <span class="name mb-0 text-sm">{{mat.project.title}}</span>
                       </td> {% endcomment %}
                   <th scope="row">
-
                       <div class="media-body">
+                        {% if mat.material_type %}
                         <span class="name mb-0 text-sm">{{mat.material_type}}</span>
+                        {% else %}
+                        {{mat.manual_material_type}}
+                        {% endif %}
                       </div>
                   </th>
                   <td>
@@ -354,10 +394,11 @@ function clicked(id){
       success: function( response ) 
         {
 
-          console.log(response)
+           // console.log(response.manual_material_type)
             //console.log(response)
             document.getElementById('e_retailer').innerHTML=response.retailer
             $('#e_id_material_type').val(response.material_type)
+            $('#e_id_manual_material_type').val(response.manual_material_type)
             $('#e_figure').val(response.figure)
             $('#e_id_unit').val(response.unit)
             $('#e_id_purpose').val(response.purpose)
@@ -385,7 +426,7 @@ function clicked(id){
     $("#material_form").validate({
       rules: {
         material_type: {
-             required: true,
+             required: false,
         },              
         figure: {
              required: true,
@@ -396,6 +437,9 @@ function clicked(id){
         price_per_item: {
           required: true,
        },
+       add_material_type_manualy: {
+        required: false,
+     },
      //  money_paid: {
      //   required: true,
      //},                 

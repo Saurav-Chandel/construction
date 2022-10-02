@@ -107,10 +107,12 @@
                     <span class="name mb-0 text-sm">{{attendence.project}}</span>
                   </td>
                   <td class="budget">
-                    {% if attendence.attendence == True %}
+                    {% if attendence.attendence == '1' %}
                     <button id="" class="btn btn-success rounded-circle btn-sm" type="button">P</button>
-                    {% else %}
+                    {% elif attendence.attendence == '0' %}
                     <button id="" class="btn btn-danger rounded-circle btn-sm" type="button">A</button>
+                    {% elif attendence.attendence == '2' %}
+                    <button id="" class="btn btn-warning rounded-circle btn-sm" type="button">S</button>
                     {% endif %}
                   </td>
                   <td class="budget">

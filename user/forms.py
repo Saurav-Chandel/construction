@@ -59,10 +59,11 @@ class MaterialForm(forms.ModelForm):
 
     class Meta:
         model = Material
-        fields = ['retailer','project','material_type','figure','unit','purpose','size','price_per_item']
+        fields = ['retailer','project','material_type','manual_material_type','figure','unit','purpose','size','price_per_item']
         widgets={
           'retailer':forms.Select(attrs={'class':'form-control'}),
           'material_type':forms.Select(attrs={'class':'form-control'}),
+          'manual_material_type':forms.TextInput(attrs={'class':'form-control','placeholder':'Enter Material Type Manually'}),
           'project':forms.Select(attrs={'class':'form-control'}),
         #   'quantity': forms.NumberInput(attrs={'class': 'form-control'}),
           'figure': forms.NumberInput(attrs={'class': 'form-control','placeholder': 'Enter Number of Items'}),
@@ -81,14 +82,16 @@ class MaterialForm(forms.ModelForm):
      
 
 class ShowMaterialForm(forms.ModelForm):
+    # add_material_type_manualy=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Add Material Type Manually','required':'False'}))
     # retailer=forms.ModelChoiceField(queryset=Retailer.objects.all(),empty_label="Choose Retailer")
       
     class Meta:
         model = Material
-        fields = ['retailer','material_type','figure','unit','purpose','size','price_per_item']
+        fields = ['retailer','material_type','manual_material_type','figure','unit','purpose','size','price_per_item']
         widgets={
           'retailer':forms.Select(attrs={'class':'form-control'}),
           'material_type':forms.Select(attrs={'class':'form-control'}),
+          'manual_material_type':forms.TextInput(attrs={'class':'form-control','placeholder':'Enter Material Type Manually'}),
         #   'project':forms.Select(attrs={'class':'form-control'}),
         #   'quantity': forms.NumberInput(attrs={'class': 'form-control'}),
           'figure': forms.NumberInput(attrs={'class': 'form-control','placeholder': 'Enter Number of Items'}),

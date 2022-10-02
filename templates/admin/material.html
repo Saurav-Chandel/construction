@@ -144,7 +144,11 @@
                       </div>
                   </th>
                    <td>
+                    {% if mat.material_type %}
                     <span class="name mb-0 text-sm">{{mat.material_type}}</span>
+                    {% else %}
+                    {{mat.manual_material_type}}
+                    {% endif %}
                   </td>
                   <td>
                     <span class="name mb-0 text-sm">{{mat.quantity}}</span>
@@ -229,7 +233,7 @@ function clicked(id){
     $("#material_form").validate({
       rules: {
         material_type: {
-             required: true,
+             required: false,
         },    
         retailer: {
           required: true,

@@ -103,9 +103,7 @@ def Show_Material(request,id):
     if request.method == "GET":
         retailer=Retailer.objects.all()
         form = ShowMaterialForm()
-
         material=Material.objects.filter(project=id).order_by('-id')
-
         # m_r=Material.objects.filter(project=id,retailer=8)
         # print(m_r)
         try:
@@ -135,14 +133,14 @@ def Show_Material(request,id):
         else:
             ammount_to_pay=total_ammount  
         # print(material.values())    
-
         return render(request, 'admin/show_material.html', {"form": form,'material':material,'retailer':retailer,'project':project,'total_ammount':total_ammount,'ammount_paid':ammount_paid,'ammount_to_pay':ammount_to_pay})  
 
     if request.method=='POST':
         project=Project.objects.get(id=id)
-        fm=MaterialForm(request.POST)
+        fm=ShowMaterialForm(request.POST)
         if fm.is_valid():
              m_t=fm.cleaned_data['material_type']
+             m_m_t=fm.cleaned_data['manual_material_type']
              figure=fm.cleaned_data['figure']
              unit=fm.cleaned_data['unit']
              price_per_item=fm.cleaned_data['price_per_item']
@@ -151,7 +149,7 @@ def Show_Material(request,id):
              size=fm.cleaned_data['size']
              retailer=fm.cleaned_data['retailer']
             #  project=fm.cleaned_data['project']
-             mat=Material(retailer=retailer,material_type=m_t,figure=figure,unit=unit,price_per_item=price_per_item,size=size,purpose=purpose,project=project)
+             mat=Material(retailer=retailer,material_type=m_t,manual_material_type=m_m_t,figure=figure,unit=unit,price_per_item=price_per_item,size=size,purpose=purpose,project=project)
              mat.save()
              fm = ShowMaterialForm()  
              messages.add_message(request, messages.INFO, 'Material added successfully')
@@ -225,11 +223,13 @@ def Get_Previous_Worker(request,id):
 
 def Edit_Worker(request):
     worker=Worker.objects.get(id=request.POST.get('worker_id')) 
+    
+    print(request.POST.get('e_project'),'----------------------')
 
     if request.POST.get('edit_name'):
         worker.name=request.POST.get('edit_name')
     if request.POST.get('e_project'):
-        project=Project.objects.get(title=request.POST.get('e_project'))
+        project=Project.objects.get(id=request.POST.get('e_project'))
         worker.project=project  
     if request.POST.get('e_type'):
         worker.worker_type=request.POST.get('e_type')   
@@ -271,26 +271,27 @@ def View_Project(request,id):
   
 
 def Mark_Attendance_present(request,id,ids):
+    print('++++++++++++++++++++++== ')
     
-    if request.method=="POST":
+    if request.method=="GET":
        worker=Worker.objects.get(id=id)
        project=Project.objects.get(id=ids)
 
        aa=Attendence.objects.filter(project=project,worker=worker) 
        if Attendence.objects.filter(project=project,worker=worker,today=datetime.datetime.now().date()).exists():
-           if request.POST.get('money_paid'):
-              Attendence.objects.filter(project=project,worker=worker,today=datetime.datetime.now().date()).update(money_paid=request.POST.get('money_paid'))
-              messages.add_message(request, messages.INFO, 'Money Paid Save Successfully')
-              return redirect('view_project',id=project.id)
-           else:
-              if Attendence.objects.filter(project=project,worker=worker,attendence=0):
-                messages.add_message(request, messages.INFO, 'Mark Attendence Present')
-                print('absent to present')    
-                aa.update(project=project,worker=worker,attendence=1)  
-                return redirect('view_project',id=project.id)
-              else:
-                messages.add_message(request, messages.INFO, 'you already mark a present attendance for this worker')
-                return redirect('view_project',id=project.id) 
+        #    if request.POST.get('money_paid'):
+        #       Attendence.objects.filter(project=project,worker=worker,today=datetime.datetime.now().date()).update(money_paid=request.POST.get('money_paid'))
+        #       messages.add_message(request, messages.INFO, 'Money Paid Save Successfully')
+        #       return redirect('view_project',id=project.id)
+        #    else:
+                # if Attendence.objects.filter(project=project,worker=worker,attendence=0) or Attendence.objects.filter(project=project,worker=worker,attendence=2):
+            messages.add_message(request, messages.INFO, 'Mark Attendence Present')
+            print('absent to present')    
+            aa.update(project=project,worker=worker,attendence=1)  
+            return redirect('view_project',id=project.id)
+                # else:
+                #   messages.add_message(request, messages.INFO, 'you already mark a present attendance for this worker')
+                #   return redirect('view_project',id=project.id) 
        else: 
             Attendence.objects.create(project=project,worker=worker)
             messages.add_message(request, messages.INFO, 'Mark Attendence Present')
@@ -309,27 +310,60 @@ def Mark_Attendance_Absent(request,id,ids):
     return redirect('view_project',id=project.id)
 
 
+def Mark_Short_Day(request,id,ids):
+    worker=Worker.objects.get(id=id)
+    project=Project.objects.get(id=ids)
+    aa=Attendence.objects.filter(project=project,worker=worker,today=datetime.datetime.now().date())
+    if aa:
+        messages.add_message(request, messages.INFO, 'Mark Attendence Shorty Day')
+        aa.update(project=project,worker=worker,attendence=2)
+    else:
+        messages.add_message(request, messages.INFO, 'Mark Attendence Absentt')
+        Attendence.objects.create(project=project,worker=worker,attendence=2)
+    return redirect('view_project',id=project.id)
+
+
+def Already_Paid(request,id,ids):
+    worker=Worker.objects.get(id=id)
+    project=Project.objects.get(id=ids)
+    aa=Attendence.objects.filter(project=project,worker=worker,today=datetime.datetime.now().date())
+    if request.POST.get('money_paid'):
+              Attendence.objects.filter(project=project,worker=worker,today=datetime.datetime.now().date()).update(money_paid=request.POST.get('money_paid'))
+              messages.add_message(request, messages.INFO, 'Money Paid Save Successfully')
+              return redirect('view_project',id=project.id)
+    return redirect('view_project',id=project.id)
+
+
+
 
 def View_Attendence(request,id,ids):
     attendence=Attendence.objects.filter(created_at__month=datetime.datetime.now().month,worker=id,project=ids).order_by('-id')
     w_w=Worker.objects.get(id=id).worker_wages
-    a_c=Attendence.objects.filter(created_at__month=datetime.datetime.now().month,worker=id,project=ids,attendence='True').count()
+    a_c=Attendence.objects.filter(created_at__month=datetime.datetime.now().month,worker=id,project=ids,attendence='1').count()
+    try:
+       a_s_d_c=Attendence.objects.filter(created_at__month=datetime.datetime.now().month,worker=id,project=ids,attendence='2').count()
+       w_s_d_w=round(Worker.objects.get(id=id).worker_wages/2)*a_s_d_c
+
+    except:
+        pass  
 
     total_income=w_w*a_c
+    t_income_Include_half_day=total_income+w_s_d_w
+
     already_paid=Attendence.objects.filter(created_at__month=datetime.datetime.now().month,worker=id,project=ids)
     already_paid=sum(x.money_paid for x in already_paid if x.money_paid is not None)
 
-    amount_to_pay=total_income-already_paid
+    amount_to_pay=t_income_Include_half_day-already_paid
 
     months = {'01':'January', '02':'February', '03':'March', '04':'April', '05':'May', '06':'June', '07':'July',
           '08':'August', '09':'September', '10':'October', '11':'November', '12':'December'}    
-    return render(request,'admin/view_attendence.html',{'attendences':attendence,'total_income':total_income,'already_paid':already_paid,'amount_to_pay':amount_to_pay,'months':months,'worker_id':id,'project_id':ids}) 
+    return render(request,'admin/view_attendence.html',{'attendences':attendence,'total_income':t_income_Include_half_day,'already_paid':already_paid,'amount_to_pay':amount_to_pay,'months':months,'worker_id':id,'project_id':ids}) 
 
 
 def search_by_month(request,id,ids):
 
     w_w=Worker.objects.get(id=id).worker_wages
-    a_c=Attendence.objects.filter(created_at__month=datetime.datetime.now().month,worker=id,project=ids,attendence='True').count()
+    a_c=Attendence.objects.filter(created_at__month=datetime.datetime.now().month,worker=id,project=ids,attendence='1').count()
     total_income=w_w*a_c
 
     already_paid=Attendence.objects.filter(created_at__month=datetime.datetime.now().month,worker=id,project=ids)
@@ -344,7 +378,7 @@ def search_by_month(request,id,ids):
     attendence=Attendence.objects.filter(created_at__month=datetime.datetime.now().month,worker=id,project=ids).order_by('-id')
     if request.GET.get('months'):
         w_w=Worker.objects.get(id=id).worker_wages
-        a_c=Attendence.objects.filter(created_at__month=request.GET.get('months'),worker=id,project=ids,attendence='True').count()
+        a_c=Attendence.objects.filter(created_at__month=request.GET.get('months'),worker=id,project=ids,attendence='1').count()
         total_income=w_w*a_c
         attendence=Attendence.objects.filter(created_at__month=request.GET.get('months'),worker=id,project=ids).order_by('-id')
         already_paid=Attendence.objects.filter(created_at__month=request.GET.get('months'),worker=id,project=ids,)
@@ -371,15 +405,16 @@ def Add_Material(request):
         fm=MaterialForm(request.POST)
         if fm.is_valid():
              m_t=fm.cleaned_data['material_type']
+             m_m_t=fm.cleaned_data['manual_material_type']
              figure=fm.cleaned_data['figure']
              unit=fm.cleaned_data['unit']
              price_per_item=fm.cleaned_data['price_per_item']
-             money_paid=fm.cleaned_data['money_paid']
+            #  money_paid=fm.cleaned_data['money_paid']
              purpose=fm.cleaned_data['purpose']
              size=fm.cleaned_data['size']
              project=fm.cleaned_data['project']
              retailer=fm.cleaned_data['retailer']
-             mat=Material(retailer=retailer,material_type=m_t,figure=figure,unit=unit,price_per_item=price_per_item,money_paid=money_paid,size=size,purpose=purpose,project=project)
+             mat=Material(retailer=retailer,material_type=m_t,manual_material_type=m_m_t,figure=figure,unit=unit,price_per_item=price_per_item,size=size,purpose=purpose,project=project)
              mat.save()
             #  fm = MaterialForm()  
              messages.add_message(request, messages.INFO, 'Material added successfully')
@@ -392,6 +427,7 @@ def Get_Previous_Material(request,id):
         'retailer':material.retailer.name,
         'project':material.project.title,
         'material_type':material.material_type,
+        'manual_material_type':material.manual_material_type,
         'quantity':material.quantity,
         'figure':material.figure,
         'unit':material.unit,
@@ -434,6 +470,7 @@ def Edit_Material(request):
 
 def Add_Retialer(request):
     if request.method=="GET":
+        print('+++++++++++++++++++++++++++++++')
         print(request.user)
         retailer=Retailer.objects.filter(user=request.user).order_by('-id')
         
@@ -510,6 +547,7 @@ def Edit_Retailer(request):
 
 
 def View_Retialer(request,id):
+    print('========================')
     material=Material.objects.filter(retailer=id)
     t_p=sum(x.total_price for x in Material.objects.filter(retailer=id) if x.total_price is not None)
     m_p=sum(x.money_paid for x in Material.objects.filter(retailer=id) if x.money_paid is not None)
@@ -542,7 +580,7 @@ def Pay_Money(request,id):
         # mm=Material.objects.get(id=request.POST.get('p_material_id')).money_paid
         # print(mm)
         m_a_p=Material.objects.get(id=request.POST.get('p_material_id')).money_paid
-        print(m_a_p)
+        print(m_a_p,'9999999999999999')
     
         if m_a_p is not None:
             aaa=m_a_p+int(request.POST.get('p_pay_ammount'))
@@ -557,8 +595,10 @@ def Pay_Money(request,id):
 def Pay_Retialer_Money(request):
     try:
         money_paid=Retailer.objects.get(id=request.POST.get('p_retailer_id')).money_paid
+        print(money_paid,'============')
     
         total_ammount_paid=money_paid+int(request.POST.get('p_pay_ammount'))
+        print(total_ammount_paid)
     
         mm=Material.objects.filter(retailer=request.POST.get('p_retailer_id'))
     

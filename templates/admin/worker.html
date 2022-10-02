@@ -55,9 +55,9 @@
             <label for="recipient-name" class="col-form-label">Select Project</label><br>
             <select class='form-control' name="e_project" id="e_project">
 
-              <option name="edit_project" id="edit_project">Select Project</option>
+              <option value='' name="edit_project" id="edit_project">Select Project</option>
             {% for p in project %}
-              <option  value={{p.title}}>{{p.title}}</option>
+              <option  value={{p.id}}>{{p.title}}</option>
             {% endfor %}
             </select>
             </div>

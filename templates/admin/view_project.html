@@ -166,7 +166,7 @@
               </thead>
               {% for worker in workers %}
              
-              <form action="{% url 'mark_attendance_present'  worker.id worker.project.id %}" method="POST">
+              <form action="{% url 'already_paid'  worker.id worker.project.id %}" method="POST">
                 {% csrf_token %}
               <tbody class="list">
                 <tr>
@@ -199,8 +199,9 @@
                     <div class="media align-items-center">
                       <div class="media-body">
                        
-                        <a id="prs" href="{% url 'mark_attendance_present' worker.id worker.project.id %}"><button id="present{{worker.id}}" onclick="myFunction({{worker.id}})" class="btn btn-success  btn-sm" type="submit">present</button></a>
+                        <a id="prs" href="{% url 'mark_attendance_present' worker.id worker.project.id %}"><button id="present{{worker.id}}" onclick="myFunction({{worker.id}})" class="btn btn-success  btn-sm" type="button">present</button></a>
                         <a id="abs" href="{% url 'mark_attendance_absent' worker.id worker.project.id %}"><button id="absent{{worker.id}}" onclick="myFunction({{worker.id}})"class="btn btn-danger  btn-sm" type="button">Absent</button></a>
+                        <a id="abs" href="{% url 'mark_short_attendance' worker.id worker.project.id %}"><button id="absent{{worker.id}}" onclick="myFunction({{worker.id}})"class="btn btn-warning  btn-sm" type="button">Half Day</button></a>
                       </div>
                     </div>
                   </th>
@@ -215,18 +216,21 @@
                        
                               {% if a.worker.id == worker.id %}
                             
-                                  {% if a.attendence == True %}
+                                  {% if a.attendence == '1' %}
                                   
                                   <button id="" class="btn btn-success rounded-circle btn-sm" type="button">P</button>
                 
-                                   {% else %}
+                                  {% elif a.attendence == '0' %}
                                  
                                   <button id="" class="btn btn-danger rounded-circle btn-sm" type="button">A</button>
+
+                                  {% elif a.attendence == '2' %}
+                                 
+                                  <button id="" class="btn btn-warning rounded-circle btn-sm" type="button">S</button>
       
                                   {% endif %}
                             
-                             
-                              
+      
                               {% endif %}   
                              
                             {% endfor %}
@@ -244,7 +248,7 @@
 
 
                         <div class="form-outline">
-                        <input type="number" class="form-control-sm" name="money_paid" {% if a.money_paid %}value="{{a.money_paid}}" {% else %} placeholder="pay money $" {% endif %}>
+                        <input type="number" id="sub" onkeyup="paid_input({{worker.id}})" class="form-control-sm" name="money_paid" {% if a.money_paid %} value="{{a.money_paid}}" {% else %} placeholder="pay money $" {% endif %}>
                         
                      
                         {% endif %}
@@ -262,12 +266,12 @@
                   <th scope="row">
                     <div class="media align-items-center">
                       <div class="media-body">
-                        <div class="form-outline">
-                          <button class="btn btn-primary btn-sm" type="submit">submit</button>
+                        <div class="row form-outline">
+                          <button class="btn btn-primary btn-sm m-2"   id="sub_btn{{worker.id}}" style='display:None' type="submit">submit</button>
               </form>
 
-                          <a href=""><button class="btn btn-warning btn-sm" >edit</button></a>
-                          <a href="{% url 'view_attendence' worker.id worker.project.id%}"><button class="btn btn-info btn-sm" >Attendence</button></a>
+                          {% comment %} <a href=""><button class="btn btn-warning btn-sm" >edit</button></a> {% endcomment %}
+                          <a style='align-self:center' href="{% url 'view_attendence' worker.id worker.project.id%}"><button  class="btn btn-info btn-sm" >Attendence</button></a>
                           
                         </div>
                       </div>
@@ -298,6 +302,14 @@
 <!-- Specific JS goes HERE --> 
 {% block javascripts %}
 
+
+<script>
+
+function paid_input(id){
+ console.log(id)
+ $("#sub_btn"+id).css("display", "block");
+}
+</script>
 {% comment %} <script>
 
     $(document).ready(function () {
@@ -341,15 +353,15 @@ function myFunction(id){
 
 
 {% comment %} <script>
-  $('#present').click(function(){
+  $('#present').click(function(id){
     alert('done')
-   $('#absent').prop('disabled',true)
+   //$('#absent').prop('disabled',true)
   })
 
   $('#absent').click(function(){
     alert('done 111')
-   $('#present').attr('disabled',true)
+   //$('#present').attr('disabled',true)
   })
- </script>  {% endcomment %}
+ </script> {% endcomment %}
 
 {% endblock javascripts %}

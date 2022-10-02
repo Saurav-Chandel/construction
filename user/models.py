@@ -39,7 +39,13 @@ units = [
     ('Quintal', 'Quintal'),
     ('Piece', 'box'),
     ('points', 'points'),
+    ('Piece', 'Piece'),
     ('Troley', 'Troley'),
+]
+attendence = [
+    ('1', 'present'),
+    ('0', 'absent'),
+    ('2', 'half_day'),
 ]
 
 class User(AbstractUser):
@@ -81,7 +87,7 @@ class Worker(models.Model):
 class Attendence(models.Model):
     project=models.ForeignKey(Project,on_delete=models.CASCADE,null=True,blank=True)
     worker=models.ForeignKey(Worker,on_delete=models.CASCADE,null=True,blank=True)
-    attendence=models.BooleanField(default=1)
+    attendence=models.CharField(max_length=100,choices=attendence,blank=True,null=True,default=1)
     today=models.DateField(auto_now_add=True,null=True,blank=True)
     money_paid=models.IntegerField(blank=True,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -104,12 +110,12 @@ class Retailer(models.Model):
     
     def __str__(self):
             return self.name
-    
-    
+        
 class Material(models.Model):
     paid=models.BooleanField(default=False,null=True,blank=True)
     retailer=models.ForeignKey(Retailer,on_delete=models.CASCADE,null=True,blank=True)
     project=models.ForeignKey(Project,on_delete=models.CASCADE,null=True,blank=True)
+    manual_material_type=models.CharField(max_length=250,null=True,blank=True)
     material_type=models.CharField(max_length=250,choices=material_type,null=True,blank=True)    
     quantity=models.CharField(max_length=250,null=True,blank=True)
     figure=models.IntegerField(blank=True,null=True)
