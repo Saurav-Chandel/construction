@@ -1,0 +1,88 @@
+{% load static %}
+{% include 'frontend_includes/header.html' %}
+
+
+<div class="hero_area">
+      <!-- class section -->
+  <section class="class_section py-5 my-5">
+    <h2>
+      Our Classes
+    </h2>
+
+
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            
+            <!-- Slider main container -->
+      <div class="swiper-container">
+          <!-- Additional required wrapper -->
+          {% if classes %}
+
+          <div class="swiper-wrapper">
+              <!-- Slides -->
+              {% for c in classes %}
+              <div class="swiper-slide">
+
+                    <div class="card ">
+                      <img class='classes_image' src="{{c.image.url}}" alt="Avatar" style="width:100%;height: 307px;">
+                      <div class="container">
+                        <h4><b>{{c.name}}</b></h4>
+                        <p>{{c.description}}</p>
+                      </div>
+                    </div>
+
+              </div>
+              {% endfor %}
+              
+          </div>
+          <!-- If we need pagination -->
+          <div class="swiper-pagination"></div>
+          <!-- If we need navigation buttons -->
+          <div class="swiper-button-prev"></div>
+          <div class="swiper-button-next"></div>
+          {% else %}
+          <p style="text-align:center"><b>No data Added Yet.</b></p>
+          {% endif %}
+      
+      </div>
+            
+          </div>
+        </div>
+      </div>  
+
+      
+
+
+  </section>
+  <!-- end class section -->
+  
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.2/js/swiper.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script>
+    $(function(){
+
+      var mySwiper = new Swiper ('.swiper-container', {
+    
+        spaceBetween: 30,
+        slidesPerView: 'auto',
+        loop: true,
+        // If we need pagination
+        pagination: '.swiper-pagination',
+        
+        // Navigation arrows
+        nextButton: '.swiper-button-next',
+        prevButton: '.swiper-button-prev',
+      });
+      
+    });
+  </script> 
+{% include 'frontend_includes/footer.html' %}  
+
+
+
+
+
+
+

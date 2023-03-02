@@ -1,0 +1,348 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Tables {% endblock title %}
+{% load static %}
+{% block content %}
+
+
+
+  <div class="header bg-primary pb-6">
+    <div class="container-fluid">
+      <div class="header-body">
+        <div class="row align-items-center py-4">
+          <div class="col-lg-6 col-7">
+            <h6 class="h2 text-white d-inline-block mb-0">Project</h6>
+            <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+              <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+                <li class="breadcrumb-item"><a href="#">Project</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Project</li>
+              </ol>
+            </nav>
+          </div>
+          <div class="col-lg-6 col-5 text-right">
+            {% comment %} <a href="#" class="btn btn-sm btn-neutral">New</a> {% endcomment %}
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-sm btn-neutral" data-toggle="modal" data-target="#">Add Retailer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<!-- add Project Modal start -->
+<div class="modal fade" id="Add_Project" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="margin-left: 175px;">
+        <h5 class="modal-title text-center" id="exampleModalLongTitle">Add Retailer</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id='retailer_form' method="POST" action="{% url 'user:add_retailer' %}">
+        {% csrf_token %}
+      <div class="modal-body">
+        
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Retailer Name</label>
+            <input type="text" name="retailer_name"  class="form-control" id="retailer_name">
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Contact Number</label>
+            <input type="number"  name="contact"  class="form-control" id="contact">
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Shop Name</label>
+            <input type="text" name="shop"  class="form-control" id="shop">
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Vehicle Number</label>
+            <input type="text" minlength='3'  maxlength="5" name="number"  class="form-control" id="number">
+          </div>
+        
+      </div>
+       
+      <div class="modal-footer">
+        {% comment %} <button type="button" class="btn btn-secondary" data-dismiss="modal">Submit</button> {% endcomment %}
+        <button type="submit" id='sub' style="margin-right: 191px;" class="btn btn-primary">Submit</button>
+      </div>
+    </form> 
+    </div>
+  </div>
+</div>
+<!-- end of add Project Modal -->
+
+
+<!-- edit Project Modal start -->
+<div class="modal fade" id="Edit_Retailer" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="margin-left: 175px;">
+        <h5 class="modal-title text-center" id="exampleModalLongTitle">Edit Project</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id="edit_retailer_form" method="POST" action="{% url 'user:edit_retailer' %}">
+        {% csrf_token %}
+      <div class="modal-body">
+        
+        <div class="form-group">
+          <label for="recipient-name" class="col-form-label">Retailer Name</label>
+          <input type="text" name="e_retailer_name"  class="form-control" id="e_retailer_name">
+        </div>
+        <div class="form-group">
+          <label for="recipient-name" class="col-form-label">Contact Number</label>
+          <input type="number"  name="e_contact"  class="form-control" id="e_contact">
+        </div>
+        <div class="form-group">
+          <label for="recipient-name" class="col-form-label">Shop Name</label>
+          <input type="text" name="e_shop"  class="form-control" id="e_shop">
+        </div>
+        <div class="form-group">
+          <label for="recipient-name" class="col-form-label">Vehicle Number</label>
+          <input type="text" minlength='3'  maxlength="15" name="e_number"  class="form-control" id="e_number">
+        </div>
+          <input type="hidden" name="retailer_id" id="retailer_id"></input>
+          {% comment %} <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Project Name</label>
+            <input type="text" class="form-control" id="recipient-name">
+          </div> {% endcomment %}
+      </div>
+       
+      <div class="modal-footer">
+        {% comment %} <button type="button" class="btn btn-secondary" data-dismiss="modal">Submit</button> {% endcomment %}
+        <button type="submit" style="margin-right: 191px;" class="btn btn-primary">Submit</button>
+      </div>
+    </form> 
+    </div>
+  </div>
+</div>
+<!-- end of edit Project Modal -->
+
+<!-- pay money Modal start -->
+<div class="modal fade" id="Pay_Money" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="margin-left: 175px;">
+          <h5 class="modal-title text-center" id="exampleModalLongTitle">Pay Ammount</h5>
+          
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form id="pay_money_form" method="POST" action="{% url 'user:pay_money' retailer_id%}">
+          {% csrf_token %}
+        <div class="modal-body">
+          
+          
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Pay Ammount</label>
+            <input readonly type="text"  name="p_pay_ammount"  class="form-control" id="p_pay_ammount">
+          </div>
+         
+            <input type="hidden" name="p_material_id" id="p_material_id"></input>
+           
+        </div>
+         
+        <div class="modal-footer">
+          {% comment %} <button type="button" class="btn btn-secondary" data-dismiss="modal">Submit</button> {% endcomment %}
+          <button type="submit" id='sub_btn' style="margin-right: 191px;" class="btn btn-primary">Submit</button>
+        </div>
+      </form> 
+      </div>
+    </div>
+</div>
+<!-- end of pay money Modal -->
+
+
+
+  
+  <!-- Page content -->
+  <div class="container-fluid mt--6">
+    
+    <!-- Dark table -->
+    <div class="row">
+      <div class="col">
+        <div class="card bg-default shadow">
+          <div class="d-flex justify-content-between">
+
+              <div class="card-header bg-transparent border-0">
+                <h3 class="text-white mb-0">Material list of {{material.0.retailer.name}} </h3>
+              </div>
+            
+              {% if total_price == 0 %}
+              {% else %}
+              <div class="card-header bg-transparent border-0">
+                <h3 class="text-white mb-0">Total Ammount {{total_price}} </h3>
+              </div>
+              {% endif %}
+              
+
+              {% if money_paid == 0 %}
+              {% else %}
+              <div class="card-header bg-transparent border-0">
+                <h3 class="text-white mb-0">Ammount Paid {{money_paid}} </h3>
+              </div>
+              {% endif %}
+
+              {% if money_to_pay == 0 %}
+              {% else %}
+              <div class="card-header bg-transparent border-0">
+                <h3 class="text-white mb-0">Ammount to Pay {{money_to_pay}} </h3>
+              </div>
+              {% endif %}
+           
+          </div>  
+          
+          <div class="table-responsive">
+            <table id="table_db" class="table align-items-center table-dark table-flush">
+              <thead class="thead-dark">
+                <tr>
+                    <th scope="col" class="sort" data-sort="name">Material Type</th>
+                    <th scope="col" class="sort" data-sort="name">Project</th>
+                    {% comment %} <th scope="col" class="sort" data-sort="name">Retailer</th> {% endcomment %}
+                    <th scope="col" class="sort" data-sort="budget">quantity</th>
+                    <th scope="col" class="sort" data-sort="completion">price per item</th>
+                    <th scope="col" class="sort" data-sort="completion">total price</th>
+                    <th scope="col" class="sort" data-sort="completion">money paid</th>
+                    <th scope="col" class="sort" data-sort="completion">purpose</th>
+                    <th scope="col" class="sort" data-sort="completion">Paid</th>
+                    <th scope="col" class="sort" data-sort="completion">created</th>
+                    {% comment %} <th scope="col" class="sort" data-sort="completion">updated</th> {% endcomment %}
+                    <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="list">
+              {% for m in material %}
+
+              {{m.id}}
+              {{m.paid}}
+
+                <tr>
+                  <th scope="row">
+                    <div class="media align-items-center">
+                      
+                      <div class="media-body">
+                        <span class="name mb-0 text-sm">{{m.material_type}}</span>
+                      </div>
+                    </div>
+                  </th>
+                  <th scope="row">
+
+                    <div class="media-body">
+                      <span class="name mb-0 text-sm">{{m.project}}</span>
+                    </div>
+                </th>
+                {% comment %} <td>
+                  <span class="name mb-0 text-sm">{{m.retailer.name}}</span>
+                </td> {% endcomment %}
+                <td>
+                  <span class="name mb-0 text-sm">{{m.quantity}}</span>
+                </td>
+                <td>
+                  <span class="name mb-0 text-sm">{{m.price_per_item}}</span>
+                </td>
+
+                <td>
+                  <span class="name mb-0 text-sm">{{m.total_price}}</span>
+                </td>
+
+                <td>
+                  <span class="name mb-0 text-sm">{% if m.money_paid %}{{m.money_paid}}{% else %}-{% endif %}</span>
+                </td>
+                <td>
+                  <span class="name mb-0 text-sm">{% if m.purpose %}{{m.purpose|truncatechars:20}}{% else %}-{% endif %}</span>
+                </td>
+                <td>
+                    <span class="name mb-0 text-sm">{{m.paid}}</span>
+                  </td>
+
+                <td>
+                  <span class="name mb-0 text-sm">{{m.created_at}}</span>
+                </td>
+                  <td class="text-right">
+                    {% comment %} <div class="dropdown">
+                      <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v"></i>
+                      </a> {% endcomment %}
+                      <div class="d-flex align-items-center">
+                        {% comment %} <a class="p-2" href=""><button class=" btn btn-success btn-sm" >Mark Attendence</button></a> {% endcomment %}
+                        {% if m.paid == True %}
+                        {% else %}
+                       <button onclick="clicked({{m.id}})" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#Pay_Money">Pay Money</button>
+                       {% endif %}
+                        <a class="p-2" href=""><button class=" btn btn-success btn-sm" >View</button></a>
+                       {% comment %} <button onclick="clicked({{r.id}})"  class="btn btn-primary btn-sm" data-toggle="modal" data-target="#Edit_Retailer">Edit</button> {% endcomment %}
+                        <a href=""><button class=" btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this item?');">Delete</button></a>
+                      </div>
+                    {% comment %} </div> {% endcomment %}
+                  </td>
+                </tr>
+              {% endfor %}
+
+                
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% include "includes/footer.html" %}
+
+  </div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}
+
+
+<script>
+function clicked(id){
+ // $('#retailer_id').val(id)
+  $('#p_material_id').val(id)
+    $.ajax({
+      url:"/get-previous-material/{{id}}" +id,
+      type:"GET",
+      //dataType : 'json',
+      success: function( response ) 
+        {          
+            //console.log(typeof(response.total_money-response.money_paid))
+            $('#p_total_price').text(response.total_money)
+            $('#p_money_paid').val(response.money_paid)
+            $('#p_pay_ammount').val(response.total_money-response.money_paid)
+        }
+    })
+   }
+</script>  
+<script>
+  $( document ).ready(function() {
+    var utc = new Date().toJSON().slice(0,10).replace(/-/g,'-');
+    //alert(utc)
+  });
+</script>   
+
+<script>
+    $("#retailer_form").validate({
+      rules: {
+        retailer_name: {
+             required: true,
+        },
+        contact: {
+          required: true,
+     },  
+                 
+                      
+    },     
+    messages: {
+      retailer_name: "Please Enter Retailer Name", 
+      contact: "Please Enter Contact Number",             
+  }
+})
+</script> 
+
+{% endblock javascripts %}

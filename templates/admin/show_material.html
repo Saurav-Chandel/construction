@@ -1,0 +1,456 @@
+
+
+{% extends 'layouts/base.html' %}
+
+{% block title %} Tables {% endblock title %}
+{% load static %}
+{% block content %}
+
+
+
+  <div class="header bg-primary pb-6">
+    <div class="container-fluid">
+      <div class="header-body">
+        <div class="row align-items-center py-4">
+          <div class="col-lg-6 col-7">
+            <h6 class="h2 text-white d-inline-block mb-0">Project</h6>
+            <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+              <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+                <li class="breadcrumb-item"><a href="#">Project</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Project</li>
+              </ol>
+            </nav>
+          </div>
+          <div class="col-lg-6 col-5 text-right">
+            {% comment %} <a href="#" class="btn btn-sm btn-neutral">New</a> {% endcomment %}
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-sm btn-neutral" data-toggle="modal" data-target="#Add_Material">Add Material</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<!-- add Project Modal start -->
+<div class="modal fade" id="Add_Material" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="margin-left: 175px;">
+        <h5 class="modal-title text-center" id="exampleModalLongTitle">Add Material</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id='material_form' method="POST" action="">
+        {% csrf_token %}
+        <div class="modal-body">
+           <div class="form-group">
+           {{form.as_p}}
+           </div>
+        </div>
+  
+      <div class="modal-footer">
+        {% comment %} <button type="button" class="btn btn-secondary" data-dismiss="modal">Submit</button> {% endcomment %}
+        <button type="submit" id='sub' style="margin-right: 191px;" class="btn btn-primary">Submit</button>
+      </div>
+    </form> 
+    </div>
+  </div>
+</div>
+<!-- end of add Project Modal -->
+
+
+<!-- edit Project Modal start -->
+<div class="modal fade" id="Edit_Material" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="margin-left: 175px;">
+        <h5 class="modal-title text-center" id="exampleModalLongTitle">Edit Material</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id="edit_material_form" method="POST" action="{% url 'user:edit_material' %}">
+        {% csrf_token %}
+      <div class="modal-body">
+        
+        <div class="form-group">
+          <label for="recipient-name" class="col-form-label">Select Retailer</label><br>
+          <select class='form-control' name="edit_retailer" id="edit_retailer">
+
+            <option value="" name="e_retailer" id="e_retailer">Select Retailer</option>
+          {% for r in retailer %}
+            <option  value={{r.id}}>{{r.name}}</option>
+          {% endfor %}
+          </select>
+          </div>
+          <div class="form-group">
+            <label for="id_material_type">Material type:</label>
+            <select name="e_id_material_type" class="form-control" id="e_id_material_type">
+              {% comment %} {% for i in material_type %} {% endcomment %}
+              <option value="" selected="">Select Material Type</option>
+            
+              <option value="Cement">Cement</option>
+            
+              <option value="Fine Sand">FIne Sand</option>
+            
+              <option value="Course Sand">Course Sand</option>
+            
+              <option value="Crusher Sand">Crusher Sand</option>
+            
+              <option value="Course aggrigate 20mm">Course aggrigate 20mm</option>
+            
+              <option value="Course aggrigate 40mm">Course aggrigate 40mm</option>
+            
+              <option value="Course aggrigate 80mm">Course aggrigate 80mm</option>
+            
+              <option value="Boulder">Boulder</option>
+            
+              <option value="Bricks">Bricks</option>
+            
+              <option value="CutStone">CutStone</option>
+            
+              <option value="Re-bar">Re-bar</option>
+            
+              <option value="Ms Steel">Ms Steel</option>
+            
+              <option value="Ms-Pipe">Ms-Pipe</option>
+            
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Manual Material type:</label>
+            <input type="Number" name="e_id_manual_material_type" class="form-control" id="e_id_manual_material_type" >
+          </div>
+
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Figure</label>
+            <input type="Number" name="e_figure" class="form-control" id="e_figure" >
+          </div>
+          
+          <div class="form-group">
+          <label for="id_unit">Unit:</label>
+          <select name="e_id_unit" class="form-control" id="e_id_unit">
+            <option value="" selected="">Select Unit</option>
+          
+            <option value="Kg">Kg</option>
+          
+            <option value="Bags">Bags</option>
+          
+            <option value="Tipper">Tipper</option>
+          
+            <option value="Truck">Truck</option>
+          
+            <option value="Tonnes">Tonnes</option>
+          
+            <option value="Quintal">Quintal</option>
+          
+            <option value="Piece">box</option>
+          
+            <option value="points">points</option>
+            <option value="Piece">Piece</option>
+          
+            <option value="Troley">Troley</option>
+          
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="id_purpose">Purpose:</label>
+          <textarea name="e_id_purpose" cols="40" rows="2" class="form-control" maxlength="500" id="e_id_purpose"></textarea>
+        </div>  
+
+        <div class="form-group">
+          <label for="id_size">Size:</label>
+          <input type="text" name="e_id_size" class="form-control" maxlength="100" id="e_id_size">
+        </div>  
+
+        <div class="form-group">
+          <label for="id_price_per_item">Price per item:</label>
+          <input type="text" name="e_id_price_per_item" class="form-control" maxlength="100" id="e_id_price_per_item">
+        </div> 
+        {% comment %} <div class="form-group">
+          <label for="id_money_paid">Money paid:</label>
+          <input type="number" name="e_id_money_paid" class="form-control" id="e_id_money_paid">
+        </div>    {% endcomment %}
+
+          <input type="hidden" name="material_id" id="material_id"></input>
+          <input type="hidden" name="project_id" id="project_id" value="{{project.id}}"></input>
+         
+      </div>
+       
+      <div class="modal-footer">
+        {% comment %} <button type="button" class="btn btn-secondary" data-dismiss="modal">Submit</button> {% endcomment %}
+        <button type="submit" style="margin-right: 191px;" class="btn btn-primary">Submit</button>
+      </div>
+    </form> 
+    </div>
+  </div>
+</div>
+<!-- end of edit Project Modal -->
+
+ <!-- pay money Modal start -->
+ <div class="modal fade" id="Pay_Money" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="margin-left: 175px;">
+        <h5 class="modal-title text-center" id="exampleModalLongTitle">Pay Ammount</h5>
+        
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id="pay_money_form" method="POST" action="{% url 'user:pay_money_project' project.id%}">
+        {% csrf_token %}
+      <div class="modal-body">
+        
+        
+        <div class="form-group">
+          <label for="recipient-name" class="col-form-label">Pay Ammount</label>
+          <input readonly type="text"  name="p_pay_ammount"  class="form-control" id="p_pay_ammount">
+        </div>
+       
+        <input type="hidden" name="p_material_id" id="p_material_id"></input>
+         
+      </div>
+       
+      <div class="modal-footer">
+        {% comment %} <button type="button" class="btn btn-secondary" data-dismiss="modal">Submit</button> {% endcomment %}
+        <button type="submit" id='sub_btn' style="margin-right: 191px;" class="btn btn-primary">Submit</button>
+      </div>
+    </form> 
+    </div>
+  </div>
+  </div>
+<!-- end of pay money Modal -->
+  
+  <!-- Page content -->
+  <div class="container-fluid mt--6">
+    
+    <!-- Dark table -->
+    <div class="row">
+      <div class="col">
+        <div class="card bg-default shadow">
+
+          <div class="d-flex justify-content-between">
+
+            <div class="col">
+              <div class="card-header bg-transparent border-0">
+                <h3 class="text-white mb-0">Material List of {{material.0.project.title}} Project</h3>
+
+              </div>
+            </div>
+            {% if  total_ammount == None %}
+            {% else %}
+            <div class="col">
+              <div class="card-header bg-transparent border-0">
+                <h3 class="text-white mb-0">total Ammount {{total_ammount}}</h3>
+              </div>
+            </div>
+            {% endif %}
+
+            {% if  ammount_paid == None %}
+            {% else %}
+            <div class="col">
+              <div class="card-header bg-transparent border-0">
+                <h3 class="text-white mb-0">Ammount Paid {{ammount_paid}}</h3>
+              </div>
+            </div>
+            {% endif %}
+
+            {% if  ammount_to_pay == None %}
+            {% else %}
+            <div class="col">
+              <div class="card-header bg-transparent border-0">
+                <h3 class="text-white mb-0">Ammount to Pay {{ammount_to_pay}}</h3>
+              </div>
+            </div>
+            {% endif %}
+
+          
+        </div>
+          <div class="table-responsive">
+            <table id="table_db" class="table align-items-center table-dark table-flush">
+              <thead class="thead-dark">
+                <tr>
+                  {% comment %} <th scope="col" class="sort" data-sort="name">Project</th> {% endcomment %}
+                  <th scope="col" class="sort" data-sort="name">Material Type</th>
+                  <th scope="col" class="sort" data-sort="name">Retailer</th>
+                  <th scope="col" class="sort" data-sort="budget">quantity</th>
+                  <th scope="col" class="sort" data-sort="completion">price per item</th>
+                  <th scope="col" class="sort" data-sort="completion">total price</th>
+                  <th scope="col" class="sort" data-sort="completion">money paid</th>
+                  <th scope="col" class="sort" data-sort="completion">purpose</th>
+                  <th scope="col" class="sort" data-sort="completion">paid</th>
+                  <th scope="col" class="sort" data-sort="completion">created</th>
+                  {% comment %} <th scope="col" class="sort" data-sort="completion">updated</th> {% endcomment %}
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="list">
+              {% for mat in material %}
+              
+                <tr>
+                    {% comment %} <td>
+                        <span class="name mb-0 text-sm">{{mat.project.title}}</span>
+                      </td> {% endcomment %}
+                  <th scope="row">
+                      <div class="media-body">
+                        {% if mat.material_type %}
+                        <span class="name mb-0 text-sm">{{mat.material_type}}</span>
+                        {% else %}
+                        {{mat.manual_material_type}}
+                        {% endif %}
+                      </div>
+                  </th>
+                  <td>
+                    <span class="name mb-0 text-sm">{{mat.retailer.name}}</span>
+                  </td>
+                  <td>
+                    <span class="name mb-0 text-sm">{{mat.quantity}}</span>
+                  </td>
+                  <td>
+                    <span class="name mb-0 text-sm">&#8377; {{mat.price_per_item}}</span>
+                  </td>
+
+                  <td>
+                    <span class="name mb-0 text-sm">&#8377; {{mat.total_price}}</span>
+                  </td>
+
+                  <td>
+                    <span class="name mb-0 text-sm">{% if mat.money_paid %}&#8377; {{mat.money_paid}}{% else %}-{% endif %}</span>
+                  </td>
+                  <td>
+                    <span class="name mb-0 text-sm">{% if mat.purpose %}{{mat.purpose|truncatechars:20}}{% else %}-{% endif %}</span>
+                  </td>
+
+                  <td>
+                    <span class="name mb-0 text-sm">{{mat.paid}}</span>
+                  </td>
+
+                  <td>
+                    <span class="name mb-0 text-sm">{{mat.created_at}}</span>
+                  </td>
+                  {% comment %} <td>
+                    <span class="name mb-0 text-sm">{{mat.updated_at}}</span>
+                  </td> {% endcomment %}
+
+                 
+                  
+                  <td class="text-right">
+                   
+                      <div class="d-flex align-items-center">
+                        {% comment %} <a class="p-2" href=""><button class=" btn btn-success btn-sm" >Pay Money</button></a> {% endcomment %}
+                        {% if mat.paid == True %}
+                        {% else %}
+                       <button onclick="clicked({{mat.id}})" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#Pay_Money">Pay Money</button>
+                        {% endif %}
+                        <a class="p-2" href=""><button class=" btn btn-success btn-sm" >View</button></a>
+                       <button onclick="clicked({{mat.id}})"  class="btn btn-primary btn-sm" data-toggle="modal" data-target="#Edit_Material">Edit</button>
+                        <a href=""><button class=" btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this item?');">Delete</button></a>
+                      </div>
+                    {% comment %} </div> {% endcomment %}
+                  </td>
+                </tr>
+
+                   
+              {% endfor %}
+
+                
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    {% include "includes/footer.html" %}
+
+  </div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}
+
+
+<script>
+function clicked(id){
+  $('#material_id').val(id)
+  $('#p_material_id').val(id)
+    $.ajax({
+      url:"/get-previous-material/{{id}}" +id,
+      type:"GET",
+      //dataType : 'json',
+      success: function( response ) 
+        {
+
+           // console.log(response.manual_material_type)
+            //console.log(response)
+            document.getElementById('e_retailer').innerHTML=response.retailer
+            $('#e_id_material_type').val(response.material_type)
+            $('#e_id_manual_material_type').val(response.manual_material_type)
+            $('#e_figure').val(response.figure)
+            $('#e_id_unit').val(response.unit)
+            $('#e_id_purpose').val(response.purpose)
+            $('#e_id_size').val(response.size)
+            $('#e_id_price_per_item').val(response.price_per_item)
+            $('#e_id_money_paid').val(response.money_paid)
+            $('#p_pay_ammount').val(response.total_money-response.money_paid)
+
+
+            //$('#p_total_price').text(response.total_money)
+            //$('#p_money_paid').val(response.money_paid)
+           
+        }
+    })
+   }
+</script>  
+<script>
+  $( document ).ready(function() {
+    var utc = new Date().toJSON().slice(0,10).replace(/-/g,'-');
+    //alert(utc)
+  });
+</script>   
+
+<script>
+    $("#material_form").validate({
+      rules: {
+        material_type: {
+             required: false,
+        },              
+        figure: {
+             required: true,
+        },
+        unit: {
+            required: true,
+       },  
+        price_per_item: {
+          required: true,
+       },
+       add_material_type_manualy: {
+        required: false,
+     },
+     //  money_paid: {
+     //   required: true,
+     //},                 
+    },
+       
+    messages: {
+        material_type: "Please Select Material Type", 
+        figure: "Please Enter Number Of Items",             
+        unit: "Please Select unit",             
+        price_per_item: "Please Enter price per Item",             
+       // money_paid: "Please Enter Money Paid",             
+  }
+})
+</script> 
+
+
+
+{% endblock javascripts %}

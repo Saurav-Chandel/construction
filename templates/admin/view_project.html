@@ -1,0 +1,363 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Tables {% endblock title %}
+{% load static %}
+{% block content %}
+
+
+
+  <div class="header bg-primary pb-6">
+    <div class="container-fluid">
+      <div class="header-body">
+        <div class="row align-items-center py-4">
+          <div class="col-lg-6 col-7">
+            <h6 class="h2 text-white d-inline-block mb-0">Attendance</h6>
+            <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+              <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+                <li class="breadcrumb-item"><a href="#">Attendance</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Attendance</li>
+              </ol>
+            </nav>
+          </div>
+          <div class="col-lg-6 col-5 text-right">
+            {% comment %} <a href="#" class="btn btn-sm btn-neutral">New</a> {% endcomment %}
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-sm btn-neutral" data-toggle="modal" data-target="#Add_Worker">Add Worker</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<!-- add Project Modal start -->
+<div class="modal fade" id="Add_Worker" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="margin-left: 175px;">
+        <h5 class="modal-title text-center" id="exampleModalLongTitle">Add Worker</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id="worker_form" method="POST" action="{% url 'user:view_project' project.id%}">
+        {% csrf_token %}
+      <div class="modal-body">
+        
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Worker Name</label>
+            <input type="text" name="worker_name"  class="form-control" id="worker_name">
+          </div>
+          
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Employe Type</label><br>
+            <select class='form-control' name="employee_type" id="employee_type">
+              <option selected disabled>Select Type</option>
+              <option value="supervisor">Supervisor</option>
+              <option value="labour">Labour</option>
+            </select>
+            </div>
+           <div class="form-group">
+            <label for="recipient-name" class="col-form-label">One Day Income</label>
+            <input type="text" name="one_day_income" class="form-control" id="sallary">
+          </div>
+      </div>
+       
+      <div class="modal-footer">
+        {% comment %} <button type="button" class="btn btn-secondary" data-dismiss="modal">Submit</button> {% endcomment %}
+        <button type="submit" style="margin-right: 191px;" class="btn btn-primary">Submit</button>
+      </div>
+    </form> 
+    </div>
+  </div>
+</div>  
+<!-- end of add Project Modal -->
+
+
+<!-- edit Project Modal start -->
+<div class="modal fade" id="Edit_Project" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="margin-left: 175px;">
+        <h5 class="modal-title text-center" id="exampleModalLongTitle">Edit Project</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id="edit_project_form" method="POST" action="{% url 'user:edit_project' %}">
+        {% csrf_token %}
+      <div class="modal-body">
+        
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Project Name</label>
+            <input type="text" name="edit_name"  class="form-control" id="edit_name">
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Project Budget</label>
+            <input type="text" name="edit_budget"  class="form-control" id="edit_budget">
+          </div>
+          <input type="hidden" name="project_id" id="project_id"></input>
+          {% comment %} <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Project Name</label>
+            <input type="text" class="form-control" id="recipient-name">
+          </div> {% endcomment %}
+      </div>
+       
+      <div class="modal-footer">
+        {% comment %} <button type="button" class="btn btn-secondary" data-dismiss="modal">Submit</button> {% endcomment %}
+        <button type="submit" style="margin-right: 191px;" class="btn btn-primary">Submit</button>
+      </div>
+    </form> 
+    </div>
+  </div>
+</div>
+<!-- end of edit Project Modal -->
+  
+  <!-- Page content -->
+  <div class="container-fluid mt--6">
+    
+    <!-- Dark table -->
+    <div class="row">
+      <div class="col">
+        <div class="card bg-default shadow">
+          <div class="card-header bg-transparent border-0">
+            <h3 class="text-white mb-0">Workersss of {{project.title}} Project</h3>
+          </div>
+{% comment %}          
+          {% for worker,attendence in data %}
+          {{worker}}
+          {{attendence}}
+          {% endfor %}  {% endcomment %}
+
+         
+          <div class="table-responsive">
+          {% comment %} {% for worker,attendence in data %}
+          {{worker}} {% endcomment %}
+
+            <table class="table align-items-center table-dark table-flush">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col" class="sort" data-sort="name">Worker Name</th>
+                  <th scope="col" class="sort" data-sort="budget">worker_type</th>
+                  <th scope="col" class="sort" data-sort="status">worker_wages</th>
+               
+                  <th scope="col">Attendance</th>
+                
+                    {% if attendences %}
+
+                            <th scope="col">Status</th>
+           
+                    {% endif %}
+
+
+                    {% if attendences %}
+                  
+                  <th scope="col">Money Paid</th>
+                  {% endif %}
+                  <th scope="col">action</th>
+                  {% comment %} <th scope="col" class="sort" data-sort="completion">Completion</th> {% endcomment %}
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              {% for worker in workers %}
+             
+              <form action="{% url 'user:already_paid'  worker.id worker.project.id %}" method="POST">
+                {% csrf_token %}
+              <tbody class="list">
+                <tr>
+                  <th scope="row">
+                    <div class="media align-items-center">
+                      <a href="#" class="avatar rounded-circle mr-3">
+                        <img alt="Image placeholder" src="/static/assets/img/theme/bootstrap.jpg">
+                      </a>
+                      <div class="media-body">
+                        <span class="name mb-0 text-sm">{{worker.name}}</span>
+                      </div>
+                    </div>
+                  </th>
+                  <th scope="row">
+                    <div class="media align-items-center">
+                      <div class="media-body">
+                        <span class="name mb-0 text-sm">{{worker.worker_type}}</span>
+                      </div>
+                    </div>
+                  </th>
+                  <th scope="row">
+                    <div class="media align-items-center">
+                      <div class="media-body">
+                        <span class="name mb-0 text-sm">{{worker.worker_wages}}</span>
+                      </div>
+                    </div>
+                  </th>
+                  
+                  <th scope="row">
+                    <div class="media align-items-center">
+                      <div class="media-body">
+                       
+                        <a id="prs" href="{% url 'user:mark_attendance_present' worker.id worker.project.id %}"><button id="present{{worker.id}}" onclick="myFunction({{worker.id}})" class="btn btn-success  btn-sm" type="button">present</button></a>
+                        <a id="abs" href="{% url 'user:mark_attendance_absent' worker.id worker.project.id %}"><button id="absent{{worker.id}}" onclick="myFunction({{worker.id}})"class="btn btn-danger  btn-sm" type="button">Absent</button></a>
+                        <a id="abs" href="{% url 'user:mark_short_attendance' worker.id worker.project.id %}"><button id="absent{{worker.id}}" onclick="myFunction({{worker.id}})"class="btn btn-warning  btn-sm" type="button">Half Day</button></a>
+                      </div>
+                    </div>
+                  </th>
+                 
+                        {% if attendences %}
+                        <th scope="row">
+                          <div class="media align-items-center">
+                            <div class="media-body">
+                            {% for a in attendences %}
+                        
+                           
+                       
+                              {% if a.worker.id == worker.id %}
+                            
+                                  {% if a.attendence == '1' %}
+                                  
+                                  <button id="" class="btn btn-success rounded-circle btn-sm" type="button">P</button>
+                
+                                  {% elif a.attendence == '0' %}
+                                 
+                                  <button id="" class="btn btn-danger rounded-circle btn-sm" type="button">A</button>
+
+                                  {% elif a.attendence == '2' %}
+                                 
+                                  <button id="" class="btn btn-warning rounded-circle btn-sm" type="button">S</button>
+      
+                                  {% endif %}
+                            
+      
+                              {% endif %}   
+                             
+                            {% endfor %}
+                          </div>
+                        </div>
+                      </th>
+                        {% endif %}
+                     
+                  {% if attendences %}   
+                  <th scope="row">
+                    <div class="media align-items-center">
+                      <div class="media-body">
+                        {% for a in attendences %}
+                        {% if a.worker.id == worker.id %}
+
+
+                        <div class="form-outline">
+                        <input type="number" id="sub" onkeyup="paid_input({{worker.id}})" class="form-control-sm" name="money_paid" {% if a.money_paid %} value="{{a.money_paid}}" {% else %} placeholder="pay money $" {% endif %}>
+                        
+                     
+                        {% endif %}
+
+                      
+
+                        {% endfor %}
+  
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                  {% endif %}
+
+                  <th scope="row">
+                    <div class="media align-items-center">
+                      <div class="media-body">
+                        <div class="row form-outline">
+                          <button class="btn btn-primary btn-sm m-2"   id="sub_btn{{worker.id}}" style='display:None' type="submit">submit</button>
+              </form>
+
+                          {% comment %} <a href=""><button class="btn btn-warning btn-sm" >edit</button></a> {% endcomment %}
+                          <a style='align-self:center' href="{% url 'user:view_attendence' worker.id worker.project.id%}"><button  class="btn btn-info btn-sm" >Attendence</button></a>
+                          
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                </tr>
+                
+              </tbody>
+    
+              {% endfor %}
+            </table>
+          {% comment %} {% endfor %} {% endcomment %}
+
+          </div>
+
+         
+
+        </div>
+      </div>
+    </div>
+
+    {% include "includes/footer.html" %}
+
+  </div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}
+
+
+<script>
+
+function paid_input(id){
+ console.log(id)
+ $("#sub_btn"+id).css("display", "block");
+}
+</script>
+{% comment %} <script>
+
+    $(document).ready(function () {
+      var x = document.getElementById("#present");
+      alert(x)
+      
+      
+    });
+  
+</script>
+
+
+<script>
+function myFunction(id){
+  alert(id)
+  var x = document.getElementById("present");
+  console.log(x)
+}
+</script> {% endcomment %}
+
+{% comment %} 
+<script>
+  function myFunction() {
+    var x = document.getElementById("present");
+    consoloe.log(x)
+    var y = document.getElementById("absent");
+    console.log(y)
+    
+    y.style.display ="none";
+  
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    } 
+    else {
+      y.style.display = "none";
+      x.style.display = "block";
+    }
+  }
+</script>
+ {% endcomment %}
+
+
+{% comment %} <script>
+  $('#present').click(function(id){
+    alert('done')
+   //$('#absent').prop('disabled',true)
+  })
+
+  $('#absent').click(function(){
+    alert('done 111')
+   //$('#present').attr('disabled',true)
+  })
+ </script> {% endcomment %}
+
+{% endblock javascripts %}

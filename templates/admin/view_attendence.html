@@ -1,0 +1,168 @@
+{% extends 'layouts/base.html' %}
+{% block title %} Profile {% endblock title %}
+
+{% block content %}
+
+
+
+<div class="header bg-primary pb-6">
+    <div class="container-fluid">
+      <div class="header-body">
+        <div class="row align-items-center py-4">
+          <div class="col-lg-6 col-7">
+            <h6 class="h2 text-white d-inline-block mb-0">Attendence</h6>
+            <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+              <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+                <li class="breadcrumb-item"><a href="#">Attendence</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Attendence</li>
+              </ol>
+            </nav>
+          </div>
+          <div class="col-lg-6 col-5 text-right">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page content -->
+
+  
+  <div class="container-fluid mt--6">
+    <!-- Dark table -->
+    
+
+    <div class="row">
+      <div class="col">
+        <div class="card bg-default shadow">
+          
+          <div class="card-header bg-transparent border-0">
+           
+            {% comment %} <form id="attendence" method="GET" action="{% url 'user:search_by_month' worker_id project_id %}"> {% endcomment %}
+     
+            <div class="d-flex flex-row justify-content-between">
+              
+     
+                  <h5 class="text-white mb-0">Attendence of {% now "F" %}</h5>
+             
+                
+                
+                     
+                  <h5 class="text-white mb-0">Total Sallary {{total_income}} </h5>
+                   
+             
+              
+                   
+                         <h5 class="text-white mb-0">Already Paid  {{already_paid}}</h5>
+                
+              
+          
+                    
+                         <h5 class="text-white mb-0">Amount to pay {{amount_to_pay}}</h5>
+                  
+              
+                
+                        <form id="attendence" method="GET" action="{% url 'user:search_by_month' worker_id project_id %}">
+                         <div class="dropdown">
+                         <select class='form-control' name="months" >
+                           <option value="">Select Month</option>
+                           {% for m in months.items %}
+                           <option  value="{{m.0}}">{{m.1}}</option>
+                           {% endfor %}
+                         </select>
+                         </div> 
+                         <button class="btn btn-primary btn-sm" type="submit">Go</button>
+                        </form>
+                   
+                
+            </div>  
+             
+             {% comment %} </form> {% endcomment %}
+          </div>
+
+          
+          <div class="table-responsive">
+            <table id="table_db" class="table align-items-center table-dark table-flush">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col" class="sort" data-sort="name">Name</th>
+                  <th scope="col" class="sort" data-sort="budget">Project</th>
+                  <th scope="col" class="sort" data-sort="status">Attendence</th>
+                  <th scope="col" class="sort" data-sort="status">Money Paid</th>
+                  <th scope="col" class="sort" data-sort="completion">Date</th>
+
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody class="list">
+              {% for attendence in attendences %}
+
+                <tr>
+                  <th scope="row">
+                    <div class="media align-items-center">
+                      
+                      <div class="media-body">
+                        <span class="name mb-0 text-sm">{{attendence.worker.name}}</span>
+                      </div>
+                    </div>
+                  </th>
+                  <td class="budget">
+                    <span class="name mb-0 text-sm">{{attendence.project}}</span>
+                  </td>
+                  <td class="budget">
+                    {% if attendence.attendence == '1' %}
+                    <button id="" class="btn btn-success rounded-circle btn-sm" type="button">P</button>
+                    {% elif attendence.attendence == '0' %}
+                    <button id="" class="btn btn-danger rounded-circle btn-sm" type="button">A</button>
+                    {% elif attendence.attendence == '2' %}
+                    <button id="" class="btn btn-warning rounded-circle btn-sm" type="button">S</button>
+                    {% endif %}
+                  </td>
+                  <td class="budget">
+                    {% if attendence.money_paid %}
+                    {{attendence.money_paid}}
+                    {% else %}
+                    -
+                    {% endif %}
+                  </td>
+                  <td class="budget">
+                    {{attendence.created_at}}
+                  </td>
+                  <td class="text-right">
+                      <div class="media align-items-center">
+                        <a class="p-2" href=""><button class="btn btn-success btn-sm" >View</button></a>
+                        {% comment %} <a href='{% url 'user:view_project' attendence.project.id %} '<button onclick=""  class="btn btn-primary btn-sm">Edit</button></a> {% endcomment %}
+                        <a href=""><button class=" btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this item?');">Delete</button></a>
+                      </div>
+                  </td>
+                </tr> 
+                {% endfor %}
+              
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+  {% include "includes/footer.html" %}
+
+</div>
+
+
+{% endblock content %}
+
+
+
+
+
+
+
+
+
+
+

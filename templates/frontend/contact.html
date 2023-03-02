@@ -1,0 +1,86 @@
+{% load static %}
+{% include 'frontend_includes/header.html' %}
+
+    <!-- contact section -->
+
+    <section class="contact_section py-5">
+      <div class="container">
+        <div class="d-flex justify-content-center d-md-block">
+          <h2>
+            Contact Us
+          </h2>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <form action="{% url 'frontend:contact' %}" method='POST' id="contact_us" onsubmit="Loader(this.id)">
+              {% csrf_token %}
+              <div class="contact_form-container">
+                <div>
+                  <div>
+                    <input type="text" name='f_name' placeholder="First Name">
+                  </div>
+                  <div>
+                    <input type="text" name='l_name' placeholder="Last Name">
+                  </div>
+                  <div>
+                    <input type="email" name="email" placeholder="Email">
+                  </div>
+                  <div>
+                    <input type="text" name='phone' placeholder="Phone Number">
+                  </div>
+                  <div class="mt-5">
+                    <input type="text" name='message' placeholder="Message" 
+                  </div>
+                  <div class="mt-5">
+                    <button type="submit">
+                      submit
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col-md-6">
+            <div class="contact_img-box">
+              <img src="{% static 'assets/images/dance.jpg' %}" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+<script type="text/javascript" src="{% static 'assets/js/jquery-3.4.1.min.js' %}"></script>
+
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>    
+    <!-- end contact section -->
+    <script>
+      $("#contact_us").validate({
+        rules: {
+          f_name: {
+               required: true,
+          },     
+          l_name: {
+            required: true,
+          },           
+          email: {
+               required: true,
+          },
+          message: {
+            required: true,
+          },
+          phone: {
+            required: true,
+       },              
+      },
+         
+      messages: {
+        f_name: "Please Enter First Name", 
+        l_name: "Please Enter Last Name", 
+        email: "Please Enter Email", 
+        phone: "Please Enter Password",             
+        message: "Please Enter Message",             
+    }
+    })
+    </script> 
+ 
+{% include 'frontend_includes/footer.html' %}

@@ -1,0 +1,298 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Tables {% endblock title %}
+{% load static %}
+{% block content %}
+
+
+  <div class="header bg-primary pb-6">
+    <div class="container-fluid">
+      <div class="header-body">
+        <div class="row align-items-center py-4">
+          <div class="col-lg-6 col-7">
+            <h6 class="h2 text-white d-inline-block mb-0">Worker</h6>
+            <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+              <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+                <li class="breadcrumb-item"><a href="#">Worker</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Worker</li>
+              </ol>
+            </nav>
+          </div>
+          <div class="col-lg-6 col-5 text-right">
+            {% comment %} <a href="#" class="btn btn-sm btn-neutral">New</a> {% endcomment %}
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-sm btn-neutral" data-toggle="modal" data-target="#Add_Worker">Add Worker</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="Edit_Worker" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="margin-left: 175px;">
+          <h5 class="modal-title text-center" id="exampleModalLongTitle">Edit Worker</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form id="edit_worker" method="POST" action="{% url 'user:edit_worker' %}">
+          {% csrf_token %}
+        <div class="modal-body">
+          
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label">Worker Name</label>
+              <input type="text" name="edit_name"  class="form-control" id="edit_name">
+            </div>
+            <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Select Project</label><br>
+            <select class='form-control' name="e_project" id="e_project">
+
+              <option value='' name="edit_project" id="edit_project">Select Project</option>
+            {% for p in project %}
+              <option  value={{p.id}}>{{p.title}}</option>
+            {% endfor %}
+            </select>
+            </div>
+          
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label">Employe Type</label><br>
+              <select class='form-control' name="e_type" id="e_type">
+                <option name="edit_type" id="edit_type">Select Type</option>
+                <option value="supervisor">Supervisor</option>
+                <option value="labour">Labour</option>
+              </select>
+              </div>
+             <div class="form-group">
+              <label for="recipient-name" class="col-form-label">One Day Income</label>
+              <input type="text" name="edit_wage" class="form-control" id="edit_wage">
+            </div>
+        </div>
+
+        <input type="hidden" name="worker_id" id="worker_id"></input>
+
+         
+        <div class="modal-footer">
+          {% comment %} <button type="button" class="btn btn-secondary" data-dismiss="modal">Submit</button> {% endcomment %}
+          <button type="submit" style="margin-right: 191px;" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+  
+
+<!-- Modal -->
+<div class="modal fade" id="Add_Worker" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="margin-left: 175px;">
+        <h5 class="modal-title text-center" id="exampleModalLongTitle">Add Worker</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id="worker_form" method="POST" action="{% url 'user:add_worker' %}" onsubmit=Loader(this.id)>
+        {% csrf_token %}
+      <div class="modal-body">
+        
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Worker Name</label>
+            <input type="text" name="name"  class="form-control" id="recipient-name">
+          </div>
+          <div class="form-group">
+          <label for="recipient-name" class="col-form-label">Select Project</label><br>
+          <select class='form-control' name="project" id="project">
+          <option selected disabled>Select Project</option>
+          {% for p in project %}
+            <option value={{p.id}}>{{p.title}}</option>
+          {% endfor %}
+          </select>
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Employe Type</label><br>
+            <select class='form-control' name="employee_type" id="employee_type">
+              <option selected disabled>Select Type</option>
+              <option value="supervisor">Supervisor</option>
+              <option value="labour">Labour</option>
+            </select>
+            </div>
+           <div class="form-group">
+            <label for="recipient-name" class="col-form-label">One Day Income</label>
+            <input type="text" name="one_day_income" class="form-control" id="sallary">
+          </div>
+      </div>
+       
+      <div class="modal-footer">
+        {% comment %} <button type="button" class="btn btn-secondary" data-dismiss="modal">Submit</button> {% endcomment %}
+        <button type="submit" style="margin-right: 191px;" class="btn btn-primary">Submit</button>
+      </div>
+    </form> 
+    </div>
+  </div>
+</div>  
+
+  <!-- Page content -->
+  <div class="container-fluid mt--6">
+    <!-- Dark table -->
+    <div class="row">
+      <div class="col">
+        <div class="card bg-default shadow">
+          <div class="card-header bg-transparent border-0">
+            <h3 class="text-white mb-0">Eomploye</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="table align-items-center table-dark table-flush">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col" class="sort" data-sort="name">Name</th>
+                  <th scope="col" class="sort" data-sort="budget">Project</th>
+                  <th scope="col" class="sort" data-sort="status">Per Day Income</th>
+                  <th scope="col" class="sort" data-sort="status">Employe Type</th>
+                  <th scope="col" class="sort" data-sort="completion">Created</th>
+                  
+                
+                  {% if attendences %}
+
+                          <th scope="col">Status</th>
+         
+                  {% endif %}
+                  <th scope="col" class="sort" data-sort="completion">Action</th>
+
+
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              {% for worker in workers %}
+              <tbody class="list">
+                <tr>
+                  <th scope="row">
+                    <div class="media align-items-center">
+                      <a href="#" class="avatar rounded-circle mr-3">
+                        <img alt="Image placeholder" src="/static/assets/img/theme/bootstrap.jpg">
+                      </a>
+                      <div class="media-body">
+                        <span class="name mb-0 text-sm">{{worker.name}}</span>
+                      </div>
+                    </div>
+                  </th>
+                  <td class="budget">
+                    <span class="name mb-0 text-sm">{{worker.project}}</span>
+                  </td>
+                  <td class="budget">
+                    {{worker.worker_wages}}
+                  </td>
+                  <td class="budget">
+                    {{worker.worker_type}}
+                  </td>
+                  <td class="budget">
+                    {{worker.created_at}}
+                  </td>
+
+                  {% if attendences %}
+             
+                  <th scope="row">
+                    <div class="media align-items-center">
+                      <div class="media-body">
+                  {% for a in attendences %}
+                 
+                      {% if a.worker.id == worker.id %}
+     
+                   
+                          {% if a.attendence == '1' %}
+                          <button id="" class="btn btn-success rounded-circle  btn-sm" type="button">Active</button>
+
+                          {% elif a.attendence == '2' %}
+                          <button id="" class="btn btn-warning rounded-circle  btn-sm" type="button">Half day</button>
+
+                           {% else %}
+                           <button id="" class="btn btn-danger rounded-circle  btn-sm" type="button">Absent</button>
+  
+                            {% comment %} <a id="abs" href=""><button id="" class="btn btn-danger  btn-sm" type="button">A</button></a> {% endcomment %}
+                          {% endif %}
+
+
+
+                      {% comment %} {% else %}
+                      none  {% endcomment %}
+                      {% endif %} 
+                 {% endfor %}
+                </div>
+              </div>
+            </th>
+                  {% endif %}
+                
+                  <td class="text-right">
+                    
+                      <div class="media align-items-center">
+                        <a class="p-2" href="{% url 'user:view_attendence' worker.id worker.project.id%}"><button class="btn btn-success btn-sm" >View</button></a>
+                        <button onclick="clicked({{worker.id}})" data-toggle="modal" data-target="#Edit_Worker"  class="btn btn-primary btn-sm">Edit</button>
+                        <a href="{% url 'user:delete_worker' worker.id %}"><button class=" btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this item?');">Delete</button></a>
+                      </div>
+                  
+                  </td>
+                </tr> 
+              </tbody>
+              {% endfor %}
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  {% include "includes/footer.html" %}
+
+  </div>
+
+{% endblock content %}
+
+{% block javascripts %}
+
+<script>
+  function clicked(id){
+    $('#worker_id').val(id)
+      $.ajax({
+        url:"/get-privous-worker/{{id}}" +id,
+        type:"GET",
+        //dataType : 'json',
+        success: function( response ) 
+          {
+
+              $('#edit_name').val(response.worker_name)
+              document.getElementById('edit_project').innerHTML=response.worker_project
+              document.getElementById('edit_type').innerHTML=response.worker_type
+              $('#edit_wage').val(response.worker_wage)
+          }
+      })
+     }
+  </script>  
+  <script>
+    $("#worker_form").validate({
+      rules: {
+        name: {
+             required: true,
+        },              
+        project: {
+             required: true,
+        },
+        employee_type: {
+              required: true,
+        },   
+        one_day_income: {
+             required: true,
+     },                
+    },
+    messages: {
+      name: "Please Enter Worker  Name", 
+      project: "Please Select project",             
+      employee_type: "Please Select Employee type",             
+      one_day_income: "Please Enter One day income",             
+  }
+})
+</script>  
+
+
+{% endblock javascripts %}
+
