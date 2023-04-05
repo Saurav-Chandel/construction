@@ -245,3 +245,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 
 
+PAYU_CONFIG = {
+    "merchant_key": "gtKFFx",
+    "merchant_salt": "4R38IvwiV57FwVpsgOvTXBdLE4tHUXFW",
+    "mode": "test",
+    "success_url": "http://127.0.0.1:8000/frontend/payu/success/",
+    "failure_url": "http://127.0.0.1:8000/frontend/payu/faliour/"
+}

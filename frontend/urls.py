@@ -14,4 +14,8 @@ urlpatterns = [
     path('contact/', Contacts, name='contact'),
     path('about_us/', Aboutt, name='about_us'),
 
+    path('payu/', Payu, name='payu'),
+    path('payu/success/', payu_success, name='payu_success'),
+    path('payu/faliour/', payu_failure, name='payu_failure'),    
+
 ]

@@ -19,13 +19,17 @@ from django.db.models import Q
 
 # Create your views here.
 
-class AdminLoginView(TemplateView):
-    def get(self, request, *args, **kwargs):
-        return redirect('user:login')
+# class AdminLoginView(TemplateView):
+#     def get(self, request, *args, **kwargs):
+#         return redirect('user:login')
 
 def Login(request):
 
     if request.method=="GET":
+        print('login')
+        if request.user.is_authenticated:
+            print('authenticated')
+            return redirect('user:index')
         return render(request, "registration/login.html")
 
     if request.method == "POST":
@@ -58,8 +62,13 @@ def logout_view(request):
     return redirect('/')     
 
 
-# @login_required(login_url="/login/")
+@login_required(login_url="/user/login/")
 def index(request):
+    print('00000000000000000000')
+    if request.user.is_superuser:
+        print(request.user.username)
+        print('11111111111111111324')
+        return render(request,'admin/home.html')
     project=Project.objects.all().count()
     worker=Worker.objects.all().count()
 
@@ -69,11 +78,11 @@ def index(request):
     # html_template = loader.get_template('admin/home.html')
     # return HttpResponse(html_template.render(context, request))
 
-@login_required(login_url="/login/")
+@login_required(login_url="/user/login/")
 def Profile(request):
     return render(request,'admin/profile.html',{'segment':'profile'})   
 
-@login_required(login_url="/login/")
+@login_required(login_url="/user/login/")
 def Add_Project(request):
     if request.method=="GET":
         project=Project.objects.filter(user=request.user).order_by('-id')
@@ -171,7 +180,7 @@ def Edit_Project(request):
     messages.add_message(request, messages.INFO, 'Project Updated Successfully')
     return redirect('user:add_project')         
 
-@login_required(login_url="/login/")
+@login_required(login_url="/user/login/")
 def Add_Worker(request):
     projects=Project.objects.filter(user=request.user).order_by('-id')
     if request.method=="GET":
@@ -382,6 +391,7 @@ def search_by_month(request,id,ids):
 
 from django.core.paginator import Paginator
 from .constants import PERPAGE
+
 def Add_Material(request):
     msg = None
     success = False

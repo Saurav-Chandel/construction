@@ -18,13 +18,13 @@ from django.urls import path,include
 from django.conf.urls import  url
 from django.conf.urls.static import static
 from django.conf import settings
-from user.views import AdminLoginView
+# from user.views import AdminLoginView
 
 
 
 urlpatterns = [
-    url(r'^admin/', AdminLoginView.as_view()),
-    # path('admin/', admin.site.urls),
+    # url(r'^admin/', AdminLoginView.as_view()),
+    path('admin/', admin.site.urls),
     path('user/', include('user.urls',namespace='user')),
     path('', include('frontend.urls',namespace='frontend')),
     # url(r'^calendar/', include('calendarium.urls')),
